@@ -329,6 +329,69 @@ const newestEmp = ((req,res) => {
     }
 })
 
+const betnTwoJoiningDate = ((req,res)=>{
+
+    try {
+
+        const deptEmps = emp.reduce((acc,currEmp)=>{
+            if(acc[currEmp.department]){
+                acc[currEmp.department] ++;
+            }
+            else{
+                acc[currEmp.department] = 1;
+            }
+
+            return acc
+        },{})
+        
+        res.status(200).send({deptEmpCount:deptEmps} )
+
+    } catch (error) {
+        res.status(500).send("Server error")
+    }
+})
+
+const filterBetnJoiningDates = ((req,res)=>{
+    const start = req.query.start
+    const end = req.query.end
+
+    try {
+        const emps = emp.filter((e)=>{
+            return e.joiningDate >= start && e.joiningDate <= end;
+        });
+        
+        res.status(200).send({emps:emps})
+
+    } catch (error) {
+        res.status(500).send("Server error")
+    }
+}) 
+
+const updateEmpDetails = ((req,res)=>{
+    const {ID} = req.params
+    try {
+        const {address,email,contactNumber,department} = req.body
+
+        const index = emp.findIndex((e)=> e.id == ID )
+        if(index == -1){
+            return res.status(400).send("Employee not found")
+        }
+
+
+        if(address != undefined) emp[index].address = address;
+        if(email) emp[index].email = email;
+        if(contactNumber) emp[index].contactNumber = contactNumber;
+        if(department) emp[index].department = department;
+
+        res.status(200).send({msg:"Employee details updated succesfully",
+            employee : emp[index]
+        })
+         
+    } catch (error) {
+        res.status(500).send("Server error")
+    }
+})
+
 module.exports = {
     getAllEmp,
     createEmp,
@@ -344,5 +407,8 @@ module.exports = {
     sortByName,
     empcount,
     oldestEmp,
-    newestEmp
+    newestEmp,
+    betnTwoJoiningDate,
+    filterBetnJoiningDates,
+    updateEmpDetails
 }

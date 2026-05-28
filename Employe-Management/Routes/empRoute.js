@@ -35,11 +35,17 @@ router.get('/oldest-emp', empController.oldestEmp)
 
 router.get('/newest-emp', empController.newestEmp)
 
+router.get('/deptEmpcount' , empController.betnTwoJoiningDate)
+
+router.get('/filter' , empController.filterBetnJoiningDates)
+
+router.put('/update-emp-details/:ID' , empController.updateEmpDetails)
 
 // http://localhost/emp/createEmp
 // http://localhost/emp/deleteEmp
 // http://localhost/emp/empInfo
 // http://localhost/emp/department/search
+//http://localhost/emp/filter
 
 
 
